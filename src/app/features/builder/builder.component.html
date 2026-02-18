@@ -1,0 +1,26 @@
+<app-header></app-header>
+
+<main class="pt-24 pl-10 pr-10 pb-16 min-h-screen bg-gray-50/50">
+  <div class="max-w-5xl mx-auto" *ngIf="form$ | async as form">
+    <!-- Pages Stream -->
+    <div class="space-y-8">
+      <app-page-container *ngFor="let page of form.pages" [page]="page"></app-page-container>
+    </div>
+
+    <!-- Add Page Floating Action -->
+    <div class="flex justify-center mt-12 mb-20 gap-2">
+      <button nz-button nzType="default" class="flex items-center" (click)="addQuestion()">
+        <span antIcon type="plus" class="mr-2"></span>
+        Questions
+      </button>
+      <button nz-button nzType="default" class="flex items-center" (click)="addSection()">
+        <span antIcon type="section" class="mr-2"></span>
+        Section
+      </button>
+      <button nz-button nzType="default" class="flex items-center" (click)="formState.addPage()">
+        <span antIcon type="page" class="mr-2"></span>
+        Page
+      </button>
+    </div>
+  </div>
+</main>

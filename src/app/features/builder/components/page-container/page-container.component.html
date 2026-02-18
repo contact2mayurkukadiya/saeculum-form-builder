@@ -1,0 +1,75 @@
+<div class="mb-8 transition-all">
+  <!-- 1. Page Header (Collapsible) -->
+  <div class="flex items-start gap-3 mb-3" (click)="togglePage()">
+    <div class="mt-2 flex items-center justify-center text-title-black hover:text-blue-600 transition-transform duration-200" [class.rotate-180]="!isExpanded()">
+      <span antIcon type="downArrow" theme="outline"></span>
+    </div>
+
+    <div class="flex-1">
+      <div class="flex items-center gap-2 mb-1">
+        @if (!isEditingTitle) {
+          <span class="font-bold text-title-black text-[22px]">{{ page.title }}</span>
+          <span antIcon class="text-title-black hover:text-ant-primary cursor-pointer text-2xl" type="editIcon" theme="outline" (click)="enableEdit($event)" nz-tooltip nzTooltipTitle="Edit Page Title"></span>
+        } @else {
+          <input type="text" [(ngModel)]="tempTitle" appAutoFocus (keydown.enter)="saveTitle($event)" (keydown.escape)="cancelEdit($event)" class="font-bold text-[22px] text-title-black focus:outline-none bg-transparent [field-sizing:content]" (click)="$event.stopPropagation()" />
+          <span (click)="saveTitle($event)" antIcon type="check" theme="outline" class="cursor-pointer text-2xl text-green-600 transition-colors" nz-tooltip nzTooltipTitle="Save Title"></span>
+          <span (click)="cancelEdit($event)" antIcon type="close" theme="outline" class="cursor-pointer text-2xl text-red-500 transition-colors" nz-tooltip nzTooltipTitle="Cancel Edit"></span>
+        }
+      </div>
+      <p class="text-base text-gray-400 font-light">The header is the first page of your report. The user is asked to select an entity.</p>
+    </div>
+
+    <div class="text-gray-400 cursor-pointer hover:bg-gray-100 p-1 rounded" nz-button nz-popover [nzPopoverContent]="contentTemplate" nzPopoverTrigger="click" nzPopoverPlacement="right" nzPopoverOverlayClassName="no-spacing" (click)="$event.stopPropagation()">
+      <span antIcon type="moreVert" theme="outline" class="text-2xl"></span>
+    </div>
+
+    <ng-template #contentTemplate>
+      <ul class="">
+        <li (click)="addQuestionRoot(); $event.stopPropagation()" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+          <span antIcon type="plus" theme="outline" class="text-base"></span>
+          Add Question
+        </li>
+        <nz-divider class="m-0" />
+        <li (click)="addSectionRoot(); $event.stopPropagation()" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+          <span antIcon type="section" theme="outline" class="text-base"></span>
+          Add Section
+        </li>
+        <nz-divider class="m-0" />
+        <li (click)="deletePage(); $event.stopPropagation()" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 text-red-600">
+          <span antIcon type="deleteTrash" theme="outline" class="text-base"></span>
+          Delete Page
+        </li>
+      </ul>
+    </ng-template>
+  </div>
+
+  <!-- 2. Drop Zone Content -->
+  @if (isExpanded()) {
+    @if (page.elements.length > 0) {
+      <div class="flex items-center bg-[rgba(255, 255, 255, 0.5)] border border-b-0 border-[#D3D9E5] h-[30px]">
+        <div class="flex-1 px-4 text-sm font-normal text-[rgba(84, 95, 112, 1)] tracking-wide border-r border-gray-200 h-full flex items-center">Question</div>
+        <div class="min-w-[260px] px-4 text-sm font-normal text-[rgba(84, 95, 112, 1)] tracking-wide h-full flex items-center">Types of responses</div>
+      </div>
+    }
+    <div cdkDropList [id]="'page-' + page.id" [cdkDropListData]="page.elements" [cdkDropListConnectedTo]="(dropListIds$ | async) || []" (cdkDropListDropped)="drop($event)" class="bg-[rgba(255,255,255,0.7)] border border-[#D3D9E5]">
+      @for (item of page.elements; track item.id) {
+        <div cdkDrag [cdkDragData]="item" class="p-0" [ngClass]="{ 'first-item': $first }">
+          @switch (item.type) {
+            @case (ElementType.SECTION) {
+              <app-section-node [element]="item" [pageId]="page.id" (update)="updateLabel(item.id, $event)" (delete)="deleteItem(item.id)" (toggle)="toggleItem(item.id)"></app-section-node>
+            }
+            @case (ElementType.QUESTION) {
+              <app-question-node [element]="item" (labelChange)="updateLabel(item.id, $event)" (typeChange)="updateType(item.id, $event)" (delete)="deleteItem(item.id)" (addNext)="addQuestionRoot()"></app-question-node>
+            }
+          }
+
+          <!-- <div *cdkDragPlaceholder class="cdk-drag-placeholder mb-2"></div> -->
+        </div>
+      } @empty {
+        <div class="flex justify-center py-8">
+          <span class="text-sm text-gray-400">Page is empty. Add a question below.</span>
+        </div>
+      }
+    </div>
+  }
+</div>

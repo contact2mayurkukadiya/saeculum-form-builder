@@ -1,1 +1,107 @@
-/* You can add global styles to this file, and also import other style files */
+/* Material Icons (Load via CDN in index.html or install) */
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+/* Tailwind directives (Assume Tailwind is configured or use basic CSS above) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Reset & Base */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #F9FAFB;
+    color: #1F1F1F;
+}
+
+/* Design Tokens */
+:root {
+    --primary-blue: #0891F9;
+    --bg-selected: #E6F6FE;
+    --text-primary: #1F1F1F;
+    --text-secondary: #6B7280;
+    --border-color: #E5E7EB;
+    --danger: #EF4444;
+    --success: #10B981;
+}
+
+/* Typography Utilities */
+.text-input-clean {
+    @apply w-full bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none transition-colors px-1 py-1 text-gray-800;
+}
+
+/* Hierarchy Lines */
+.hierarchy-line {
+    position: absolute;
+    left: 24px;
+    top: 48px;
+    bottom: 10px;
+    width: 1px;
+    border-left: 2px dashed #E5E7EB;
+    z-index: 0;
+}
+
+/* Active State Styling */
+.form-node {
+    @apply border-t border-gray-200 transition-all duration-200 relative;
+}
+
+.form-node:focus-within,
+.form-node:hover {
+    background-color: var(--bg-selected);
+    z-index: 25;
+    position: relative;
+}
+
+.form-node.selected {
+    background-color: var(--bg-selected);
+}
+
+.first-item > app-question-node {
+    .form-node {
+        border-top: none;
+    }
+}
+
+.no-spacing {
+    .ant-popover-inner-content {
+        padding: 0;
+    }
+}
+
+/* 1. Drag Preview (The item flying with the cursor) */
+.cdk-drag-preview {
+    @apply bg-white shadow-2xl rounded-lg;
+    border: 1px solid #0891F9; /* Highligh border while dragging */
+    opacity: 0.95;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 9999 !important;
+    overflow: hidden;
+}
+
+/* 2. Drag Placeholder (The gap where item will drop) */
+.cdk-drag-placeholder {
+    opacity: 0.6;
+    background-color: #F3F4F6;
+    border: 2px dashed #9CA3AF;
+    border-radius: 6px;
+    filter: grayscale(100%); 
+}
+
+/* 3. Smooth Animations */
+.cdk-drag-animating {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* 4. Hide original drag handle cursor on the placeholder if needed */
+.cdk-drag-placeholder .cursor-move {
+    cursor: default;
+}

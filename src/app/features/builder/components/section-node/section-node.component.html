@@ -1,0 +1,62 @@
+<div class="w-full">
+  <!-- Section Header Row -->
+  <div class="flex items-center w-full px-1 py-1 bg-[#F3F9FC] transition-colors cursor-pointer border-t border-gray-200 group/section" [ngClass]="{ 'border-b': element.isExpanded }" (click)="toggle.emit(element.id)">
+    <!-- Toggle & Icon -->
+    <div class="flex items-center gap-2 mr-2">
+      <div class="w-6 h-6 flex items-center justify-center rounded-full bg-[#009AD71A] text-[#009AD7] transition-transform duration-500" [class.rotate-90]="element.isExpanded">
+        <span antIcon type="downArrow" theme="outline" class="text-sm"></span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="flex-1 flex items-center gap-2">
+      <span class="font-bold text-sm text-gray-700 select-none">{{ element.label }}</span>
+      <input type="text" [(ngModel)]="element.label" (click)="$event.stopPropagation()" (blur)="onLabelChange(element.label)" class="bg-transparent border-none focus:ring-0 w-px h-px opacity-0 focus:opacity-100 focus:w-auto p-0 text-sm" />
+    </div>
+
+    <!-- Hidden Items Count -->
+    @if (!element.isExpanded) {
+      <div class="text-xs font-medium text-gray-400 bg-white px-2 py-0.5 rounded border border-gray-100 shadow-sm mr-4">{{ element.children?.length || 0 }} items hidden</div>
+    }
+
+    <!-- Actions -->
+    <div class="opacity-0 group-hover/section:opacity-100 flex items-center gap-1 bg-white rounded border border-gray-200 shadow-sm px-1 transition-opacity" (click)="$event.stopPropagation()">
+      <button (click)="onAddQuestion()" class="p-1 text-gray-400 hover:text-blue-600" nz-tooltip nzTooltipTitle="Add Question">
+        <span antIcon type="plus" theme="outline" class="text-md"></span>
+      </button>
+      <button (click)="onAddSection()" class="p-1 text-gray-400 hover:text-blue-600" nz-tooltip nzTooltipTitle="Add Section">
+        <span antIcon type="section" theme="outline" class="text-md"></span>
+      </button>
+      <div class="w-px h-3 bg-gray-200"></div>
+      <button (click)="delete.emit(element.id)" class="p-1 text-gray-400 hover:text-red-500" nz-tooltip nzTooltipTitle="Delete Section">
+        <span antIcon type="deleteTrash" theme="outline" class="text-2xl"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Nested Content -->
+  @if (element.isExpanded) {
+    <div class="relative" cdkDropList [id]="element.id" [cdkDropListData]="element.children" [cdkDropListConnectedTo]="(dropListIds$ | async) || []" (cdkDropListDropped)="drop($event)">
+      <!-- Indentation Guide Line -->
+      <div class="absolute left-4 top-0 bottom-0 w-px border-l-2 border-dashed border-gray-200 z-0"></div>
+      <div class="absolute left-8 top-0 bottom-0 w-px border-l border-gray-200 z-20"></div>
+
+      @for (item of element.children; track item.id) {
+        <div cdkDrag [cdkDragData]="item" class="relative z-10 pl-8 group/nested" [ngClass]="{ 'first-item': $first }">
+          @switch (item.type) {
+            @case (ElementType.QUESTION) {
+              <app-question-node [element]="item" (labelChange)="updateLabel(item.id, $event)" (delete)="deleteItem(item.id)" (addNext)="addQuestionAfter()"></app-question-node>
+            }
+            @case (ElementType.SECTION) {
+              <app-section-node [element]="item" [pageId]="pageId" (update)="updateLabel(item.id, $event)" (delete)="deleteItem(item.id)" (toggle)="toggleItem(item.id)"></app-section-node>
+            }
+          }
+
+          <!-- <div *cdkDragPlaceholder class="h-10 bg-blue-50 border-l-4 border-blue-500 opacity-50 my-1 ml-8"></div> -->
+        </div>
+      } @empty {
+        <div class="pl-12 py-3 text-xs text-gray-400 italic">Empty section. Click + to add items.</div>
+      }
+    </div>
+  }
+</div>
