@@ -23,6 +23,10 @@ export class FormStateService {
   private _dropListIds = new BehaviorSubject<string[]>([]);
   public dropListIds$ = this._dropListIds.asObservable();
 
+  // Add Subject to track focus requests
+  private _focusedElementId = new BehaviorSubject<string | null>(null);
+  public focusedElementId$ = this._focusedElementId.asObservable();
+
   constructor(
     private storage: StorageService,
     private undoRedo: UndoRedoService<IForm>
@@ -86,7 +90,7 @@ export class FormStateService {
     const newElement: IElement = {
       id: uuidv4(),
       type,
-      label: type === FormElementType.SECTION ? 'New Section' : 'Question',
+      label: type === FormElementType.SECTION ? 'New Section' : '',
       questionType: type === FormElementType.QUESTION ? questionType : undefined,
       children: type === FormElementType.SECTION ? [] : undefined,
       isExpanded: true,
@@ -103,6 +107,7 @@ export class FormStateService {
     }
 
     this.updateState(newForm);
+    this._focusedElementId.next(newElement.id);
   }
 
   updateElementLabel(elementId: string, newLabel: string): void {
@@ -143,6 +148,10 @@ export class FormStateService {
     }
 
     if (found) this.updateState(newForm);
+  }
+
+  clearFocus(): void {
+    this._focusedElementId.next(null);
   }
 
 

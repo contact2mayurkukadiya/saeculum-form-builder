@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IElement } from '../../../../core/models/section.interface';
@@ -7,6 +7,8 @@ import { NzButtonComponent } from "ng-zorro-antd/button";
 import { IconsModule } from '../../../../shared/icon.module';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+import { Subscription } from 'rxjs';
+import { FormStateService } from '../../../../core/services/form-state.service';
 
 @Component({
   selector: 'app-question-node',
@@ -32,7 +34,30 @@ export class QuestionNodeComponent {
   @Output() addNext = new EventEmitter<void>();
   @Output() typeChange = new EventEmitter<QuestionType>();
 
+  @ViewChild('questionInput') questionInput!: ElementRef<HTMLInputElement>;
+
+
+  formState = inject(FormStateService);
   QuestionType = QuestionType;
+  private sub?: Subscription;
+
+
+  ngOnInit() {
+    // 2. Subscribe to focus events
+    this.sub = this.formState.focusedElementId$.subscribe(id => {
+      if (id === this.element.id) {
+        // Small timeout ensures DOM is ready after *ngFor render
+        setTimeout(() => {
+          this.questionInput?.nativeElement?.focus();
+          this.formState.clearFocus();
+        });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
 
   handleEnter(event: Event) {
     (event.target as HTMLElement).blur();

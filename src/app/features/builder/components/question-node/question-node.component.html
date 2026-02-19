@@ -6,7 +6,7 @@
 
   <!-- 2. Question Input -->
   <div class="flex-1">
-    <input type="text" [(ngModel)]="element.label" (blur)="labelChange.emit(element.label)" (keydown.enter)="handleEnter($event)" class="w-full bg-transparent border-none text-base font-normal text-title-black outline-none placeholder-gray-400 caret-[#009AD7] p-0" placeholder="Enter question text" />
+    <input #questionInput type="text" [(ngModel)]="element.label" (blur)="labelChange.emit(element.label)" (keydown.enter)="handleEnter($event)" class="w-full bg-transparent border-none text-base font-normal text-title-black outline-none placeholder-gray-400 caret-[#009AD7] p-0" placeholder="Enter question text" />
   </div>
 
   <!-- 3. Type Selector (Visual Dropdown) & Actions -->

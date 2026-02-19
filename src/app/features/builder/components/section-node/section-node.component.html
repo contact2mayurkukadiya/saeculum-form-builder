@@ -1,6 +1,6 @@
 <div class="w-full">
   <!-- Section Header Row -->
-  <div class="flex items-center w-full px-1 py-1 bg-[#F3F9FC] transition-colors cursor-pointer border-t border-gray-200 group/section" [ngClass]="{ 'border-b': element.isExpanded }" (click)="toggle.emit(element.id)">
+  <div class="flex items-center w-full px-1 py-1 bg-[#F3F9FC] transition-colors cursor-pointer border-t border-gray-200 group/section" [ngClass]="{ 'border-b  cursor-default': element.isExpanded }" (click)="toggle.emit(element.id)">
     <!-- Toggle & Icon -->
     <div class="flex items-center gap-2 mr-2">
       <div class="w-6 h-6 flex items-center justify-center rounded-full bg-[#009AD71A] text-[#009AD7] transition-transform duration-500" [class.rotate-90]="element.isExpanded">
@@ -38,7 +38,7 @@
   @if (element.isExpanded) {
     <div class="relative" cdkDropList [id]="element.id" [cdkDropListData]="element.children" [cdkDropListConnectedTo]="(dropListIds$ | async) || []" (cdkDropListDropped)="drop($event)">
       <!-- Indentation Guide Line -->
-      <div class="absolute left-4 top-0 bottom-0 w-px border-l-2 border-dashed border-gray-200 z-0"></div>
+      <div class="absolute left-4 top-0 bottom-0 w-px border-l-2 border-dashed border-gray-200 z-20"></div>
       <div class="absolute left-8 top-0 bottom-0 w-px border-l border-gray-200 z-20"></div>
 
       @for (item of element.children; track item.id) {

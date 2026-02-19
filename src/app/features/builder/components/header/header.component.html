@@ -1,1 +1,7 @@
-<p>header works!</p>
+<header class="h-16 bg-black border-b border-gray-200 fixed top-0 left-0 right-0 z-50 flex items-center justify-end px-6 shadow-sm">
+  <div class="flex items-center gap-2 p-1">
+    <button [disabled]="!undoService.canUndo()" (click)="formState.triggerUndo()" nz-button nzType="default" class="flex items-center" nz-tooltip nzTooltipTitle="Undo" nzTooltipPlacement="bottom"><span antIcon type="undo" theme="outline"></span></button>
+    <button [disabled]="!undoService.canRedo()" (click)="formState.triggerRedo()" nz-button nzType="default" class="flex items-center" nz-tooltip nzTooltipTitle="Redo" nzTooltipPlacement="bottom"><span antIcon type="redo" theme="outline"></span></button>
+  </div>
+  <button nz-button nzType="default" (click)="handleClick()">Preview</button>
+</header>
