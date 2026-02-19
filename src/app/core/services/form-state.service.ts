@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { IForm } from '../models/form.interface';
-import { IElement } from '../models/section.interface';
+import { IElement } from '../models/element.interface';
 import { FormElementType, QuestionType } from '../enums/question-type';
 import { StorageService } from './storage.service';
 import { UndoRedoService } from './undo-redo.service';

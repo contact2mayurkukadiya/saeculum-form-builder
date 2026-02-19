@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IElement } from '../../../../core/models/section.interface';
+import { IElement } from '../../../../core/models/element.interface';
 import { QuestionType } from '../../../../core/enums/question-type';
 import { NzButtonComponent } from "ng-zorro-antd/button";
 import { IconsModule } from '../../../../shared/icon.module';

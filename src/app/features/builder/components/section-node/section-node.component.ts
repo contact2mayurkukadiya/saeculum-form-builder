@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { IElement } from '../../../../core/models/section.interface';
+import { IElement } from '../../../../core/models/element.interface';
 import { FormElementType, QuestionType } from '../../../../core/enums/question-type';
 import { QuestionNodeComponent } from '../question-node/question-node.component';
 import { FormStateService } from '../../../../core/services/form-state.service';

@@ -1,4 +1,4 @@
-import { IElement } from './section.interface';
+import { IElement } from './element.interface';
 
 export interface IPage {
     id: string;

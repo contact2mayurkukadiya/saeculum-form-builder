@@ -1,27 +1,27 @@
-<div class="form-node flex items-center gap-2">
+<div class="form-node flex items-center gap-2" role="article" [attr.aria-label]="'Question: ' + element.label">
   <!-- 1. Drag Handle -->
-  <div class="cursor-move text-[#858F99] hover:text-gray-600 px-1" cdkDragHandle title="Drag to reorder">
-    <span antIcon type="dragHandle" theme="outline" class="text-xl"></span>
+  <div class="cursor-move text-[#858F99] hover:text-gray-600 px-1" cdkDragHandle title="Drag to reorder" role="button" tabindex="0" aria-label="Drag handle for question" aria-description="Click and drag to reorder questions">
+    <span antIcon type="dragHandle" theme="outline" class="text-xl" aria-hidden="true"></span>
   </div>
 
   <!-- 2. Question Input -->
   <div class="flex-1">
-    <input #questionInput type="text" [(ngModel)]="element.label" (blur)="labelChange.emit(element.label)" (keydown.enter)="handleEnter($event)" class="w-full bg-transparent border-none text-base font-normal text-title-black outline-none placeholder-gray-400 caret-[#009AD7] p-0" placeholder="Enter question text" />
+    <input #questionInput type="text" [(ngModel)]="element.label" (blur)="labelChange.emit(element.label)" (keydown.enter)="handleEnter($event)" class="w-full bg-transparent border-none text-base font-normal text-title-black outline-none placeholder-gray-400 caret-[#009AD7] p-0" placeholder="Enter question text" aria-label="Question text" aria-required="false" />
   </div>
 
   <!-- 3. Type Selector (Visual Dropdown) & Actions -->
   <div class="flex min-w-[260px] border-l border-gray-200">
     <div class="flex flex-1 items-center">
-      <nz-select class="w-full" [nzOptionHeightPx]="35" nzVariant="borderless" [(ngModel)]="element.questionType" (ngModelChange)="onTypeChange($event)" [nzSuffixIcon]="customIconTemplate" [nzCustomTemplate]="selectedTemplate">
+      <nz-select class="w-full" [nzOptionHeightPx]="35" nzVariant="borderless" [(ngModel)]="element.questionType" (ngModelChange)="onTypeChange($event)" [nzSuffixIcon]="customIconTemplate" [nzCustomTemplate]="selectedTemplate" aria-label="Question type" aria-haspopup="listbox">
         <nz-option [nzValue]="QuestionType.SHORT_TEXT" nzLabel="Text answer" nzCustomContent>
           <div class="flex items-center gap-3">
-            <span antIcon type="textIcon" theme="outline" class="text-2xl"></span>
+            <span antIcon type="textIcon" theme="outline" class="text-2xl" aria-hidden="true"></span>
             <span class="text-gray-700 font-medium text-sm">Text answer</span>
           </div>
         </nz-option>
         <nz-option [nzValue]="QuestionType.CHECKBOX" nzLabel="Checkbox" nzCustomContent>
           <div class="flex items-center gap-3">
-            <span antIcon type="checkboxIcon" theme="outline" class="text-2xl"></span>
+            <span antIcon type="checkboxIcon" theme="outline" class="text-2xl" aria-hidden="true"></span>
             <span class="text-gray-700 font-medium text-sm">Checkbox</span>
           </div>
         </nz-option>
@@ -29,7 +29,7 @@
 
       <ng-template #selectedTemplate let-selected>
         <div class="absolute flex items-center gap-3 w-full">
-          <span antIcon [type]="element.questionType === QuestionType.SHORT_TEXT ? 'textIcon' : 'checkboxIcon'" theme="outline" class="text-2xl"></span>
+          <span antIcon [type]="element.questionType === QuestionType.SHORT_TEXT ? 'textIcon' : 'checkboxIcon'" theme="outline" class="text-2xl" aria-hidden="true"></span>
           <span class="text-[#393F49] font-normal text-[14px] flex-1 truncate">
             {{ selected.nzLabel }}
           </span>
@@ -37,13 +37,13 @@
       </ng-template>
 
       <ng-template #customIconTemplate>
-        <span antIcon type="downArrow" theme="outline" class="text-[#393F49]"></span>
+        <span antIcon type="downArrow" theme="outline" class="text-[#393F49]" aria-hidden="true"></span>
       </ng-template>
     </div>
 
     <div class="w-[50px] flex items-center p-1 justify-center border-l border-gray-200">
-      <button nz-button class="bg-transparent hover:bg-red-100 p-1 border-none" (click)="delete.emit(element.id)" nz-tooltip nzTooltipTitle="Delete Question">
-        <span antIcon type="deleteTrash" theme="outline" class="text-2xl"></span>
+      <button nz-button class="bg-transparent hover:bg-red-100 p-1 border-none" (click)="delete.emit(element.id)" nz-tooltip nzTooltipTitle="Delete Question" aria-label="Delete question" [attr.aria-describedby]="'delete-' + element.id">
+        <span antIcon type="deleteTrash" theme="outline" class="text-2xl" aria-hidden="true"></span>
       </button>
     </div>
   </div>

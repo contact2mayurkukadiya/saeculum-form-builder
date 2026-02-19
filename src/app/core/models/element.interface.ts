@@ -15,5 +15,5 @@ export interface IElement {
     value?: string | boolean; // For preview/answer
 
     // Metadata
-    parentId?: string | null; // Helps in updates
+    parentId?: string | null;
 }
